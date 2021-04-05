@@ -1,5 +1,7 @@
 package main
 
+import "TaskManager/console"
+
 func main() {
 	t1 := &Task{
 		name:        "example",
@@ -32,4 +34,14 @@ func main() {
 	tasksMap["kevin"].addToList(t3)
 
 	tasksMap["kevin"].printCompletedList()
+
+	options := []string{"a", "b"}
+
+	res, err := console.Select("options", options)
+
+	if err != nil {
+		print(err.Error())
+	}
+
+	println(res)
 }
