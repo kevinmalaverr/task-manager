@@ -1,4 +1,4 @@
-package console
+package lib
 
 import (
 	"github.com/AlecAivazis/survey/v2"

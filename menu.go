@@ -1,12 +1,13 @@
 package main
 
 import (
-	"TaskManager/console"
+	console "TaskManager/lib"
+	"TaskManager/services"
 )
 
 type Menu struct{}
 
-func (menu *Menu) intro(tasks *TaskList) bool {
+func (menu *Menu) intro(tasks *services.TaskList) bool {
 	options := []string{"Add task", "Show tasks", "Exit"}
 
 	console.PrintHeader("Task Manager")
@@ -24,33 +25,35 @@ func (menu *Menu) intro(tasks *TaskList) bool {
 	return false
 }
 
-func (menu *Menu) addTask(tasks *TaskList) {
-	task := &Task{}
+func (menu *Menu) addTask(tasks *services.TaskList) {
+	task := &services.Task{}
 
-	task.name, _ = console.Input("Name: ")
-	task.description, _ = console.Input("Description: ")
-	task.completed = false
+	task.Name, _ = console.Input("Name: ")
+	task.Description, _ = console.Input("Description: ")
+	task.Completed = false
 
-	task.print()
+	task.Print()
 
 	res, _ := console.Select("Confirm?", []string{"yes", "no"})
 
 	if res == "yes" {
-		tasks.addToList(task)
+		task.Insert()
 	}
 }
 
-func (menu *Menu) showTasks(tasks *TaskList) {
+func (menu *Menu) showTasks(tasks *services.TaskList) {
 	options := []string{"All", "Completed", "Uncompleted"}
 	res, _ := console.Select("Which tasks do you want to see?", options)
 
+	tasks.GetAll()
+
 	switch res {
 	case options[0]:
-		tasks.printList()
+		tasks.PrintList()
 	case options[1]:
-		tasks.printCompletedList()
+		tasks.PrintCompletedList()
 	case options[1]:
-		tasks.printUncompletedList()
+		tasks.PrintUncompletedList()
 	default:
 		return
 	}

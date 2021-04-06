@@ -1,43 +1,23 @@
 package main
 
 import (
-	"time"
+	"TaskManager/lib"
+	"TaskManager/services"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-	// tasks := &TaskList{}
-	// menu := Menu{}
+	tasks := &services.TaskList{}
+	menu := Menu{}
 
-	MakeMigrations()
+	lib.MakeMigrations()
 
-	db := GetConnection()
-	q := `INSERT INTO notes (title, description, updated_at)
-            VALUES(?, ?, ?)`
-	// Preparamos la petición para insertar los datos de manera
-	// segura
-	stmt, err := db.Prepare(q)
-	if err != nil {
-		return
+	finished := false
+
+	for !finished {
+		finished = menu.intro(tasks)
 	}
-	// Nos aseguramos de cerrar el recurso antes de finalizar la
-	// función gracias a defer.
-	defer stmt.Close()
-	r, err := stmt.Exec("title", "des", time.Now())
-	if err != nil {
-		return
-	}
-
-	if i, err := r.RowsAffected(); err != nil || i != 1 {
-		return
-	}
-
-	// finished := false
-
-	// for !finished {
-	// 	finished = menu.intro(tasks)
-	// }
 
 }
 
