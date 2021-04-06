@@ -19,9 +19,10 @@ func (t *Task) updateDescription(newDescription string) {
 func (t *Task) updateName(newName string) {
 	t.name = newName
 }
+
 func (self *Task) print() {
 	fmt.Println("Name:", self.name)
-	fmt.Println("Descroption:", self.description)
+	fmt.Println("Description:", self.description)
 	fmt.Println("Completed:", self.completed)
 	fmt.Println()
 }

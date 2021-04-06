@@ -13,6 +13,26 @@ func PrintHeader(message string) {
 	println()
 }
 
+func Input(message string) (string, error) {
+	var qs = []*survey.Question{
+		{
+			Name:      "Value",
+			Prompt:    &survey.Input{Message: message},
+			Transform: survey.Title,
+		},
+	}
+
+	res := Response{}
+
+	err := survey.Ask(qs, &res)
+
+	if err != nil {
+		return "", err
+	}
+
+	return res.Value, nil
+}
+
 func Select(message string, options []string) (string, error) {
 	var qs = []*survey.Question{
 		{
