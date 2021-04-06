@@ -55,3 +55,7 @@ func Select(message string, options []string) (string, error) {
 
 	return res.Value, nil
 }
+
+func Continue() {
+	Input("Press enter to continue")
+}

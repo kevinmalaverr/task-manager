@@ -19,7 +19,11 @@ func (tl *TaskList) removeFromList(index int) {
 
 func (tl *TaskList) printList() {
 	console.PrintHeader("All Tasks")
-	fmt.Println()
+	if len(tl.list) == 0 {
+		fmt.Println("	⚠ the list is empty")
+		fmt.Println()
+		return
+	}
 	for _, task := range tl.list {
 		task.print()
 	}
@@ -27,8 +31,27 @@ func (tl *TaskList) printList() {
 
 func (tl *TaskList) printCompletedList() {
 	console.PrintHeader("Completed Tasks")
+	if len(tl.list) == 0 {
+		fmt.Println("	⚠ the list is empty")
+		fmt.Println()
+		return
+	}
 	for _, task := range tl.list {
 		if task.completed {
+			task.print()
+		}
+	}
+}
+
+func (tl *TaskList) printUncompletedList() {
+	console.PrintHeader("Uncompleted Tasks")
+	if len(tl.list) == 0 {
+		fmt.Println("	⚠ the list is empty")
+		fmt.Println()
+		return
+	}
+	for _, task := range tl.list {
+		if !task.completed {
 			task.print()
 		}
 	}

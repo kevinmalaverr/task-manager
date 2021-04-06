@@ -7,7 +7,7 @@ import (
 type Menu struct{}
 
 func (menu *Menu) intro(tasks *TaskList) bool {
-	options := []string{"Add task", "Show all task", "Exit"}
+	options := []string{"Add task", "Show tasks", "Exit"}
 
 	console.PrintHeader("Task Manager")
 	res, _ := console.Select("select an option", options)
@@ -16,8 +16,7 @@ func (menu *Menu) intro(tasks *TaskList) bool {
 	case options[0]:
 		menu.addTask(tasks)
 	case options[1]:
-		tasks.printList()
-		console.Input("enter to go back")
+		menu.showTasks(tasks)
 	default:
 		print("See you later!")
 		return true
@@ -39,4 +38,22 @@ func (menu *Menu) addTask(tasks *TaskList) {
 	if res == "yes" {
 		tasks.addToList(task)
 	}
+}
+
+func (menu *Menu) showTasks(tasks *TaskList) {
+	options := []string{"All", "Completed", "Uncompleted"}
+	res, _ := console.Select("Which tasks do you want to see?", options)
+
+	switch res {
+	case options[0]:
+		tasks.printList()
+	case options[1]:
+		tasks.printCompletedList()
+	case options[1]:
+		tasks.printUncompletedList()
+	default:
+		return
+	}
+
+	console.Continue()
 }

@@ -1,40 +1,50 @@
 package main
 
+import (
+	"time"
+
+	_ "github.com/mattn/go-sqlite3"
+)
+
 func main() {
-	// t1 := &Task{
-	// 	name:        "example",
-	// 	description: "example description",
-	// 	completed:   false,
-	// }
+	// tasks := &TaskList{}
+	// menu := Menu{}
 
-	// t2 := &Task{
-	// 	name:        "example 2",
-	// 	description: "example description 2",
-	// 	completed:   true,
-	// }
+	MakeMigrations()
 
-	// t3 := &Task{
-	// 	name:        "third",
-	// 	description: "example description 2",
-	// 	completed:   true,
-	// }
-
-	tasks := &TaskList{}
-
-	// tasksMap := make(map[string]*TaskList)
-
-	// tasksMap["kevin"] = tasks
-
-	// tasksMap["kevin"].addToList(t3)
-
-	// tasksMap["kevin"].printCompletedList()
-
-	menu := Menu{}
-
-	finished := false
-
-	for !finished {
-		finished = menu.intro(tasks)
+	db := GetConnection()
+	q := `INSERT INTO notes (title, description, updated_at)
+            VALUES(?, ?, ?)`
+	// Preparamos la petición para insertar los datos de manera
+	// segura
+	stmt, err := db.Prepare(q)
+	if err != nil {
+		return
+	}
+	// Nos aseguramos de cerrar el recurso antes de finalizar la
+	// función gracias a defer.
+	defer stmt.Close()
+	r, err := stmt.Exec("title", "des", time.Now())
+	if err != nil {
+		return
 	}
 
+	if i, err := r.RowsAffected(); err != nil || i != 1 {
+		return
+	}
+
+	// finished := false
+
+	// for !finished {
+	// 	finished = menu.intro(tasks)
+	// }
+
 }
+
+// tasksMap := make(map[string]*TaskList)
+
+// tasksMap["kevin"] = tasks
+
+// tasksMap["kevin"].addToList(t3)
+
+// tasksMap["kevin"].printCompletedList()
